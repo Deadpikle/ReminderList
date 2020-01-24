@@ -1,12 +1,12 @@
-﻿using WPFTemplate.Interfaces;
+﻿using ReminderList.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPFTemplate.Helpers;
+using ReminderList.Helpers;
 
-namespace WPFTemplate.ViewModels
+namespace ReminderList.ViewModels
 {
     class BaseViewModel : ChangeNotifier, IChangeViewModel
     {

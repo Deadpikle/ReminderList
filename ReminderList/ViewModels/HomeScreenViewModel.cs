@@ -1,5 +1,5 @@
-﻿using WPFTemplate.Helpers;
-using WPFTemplate.Interfaces;
+﻿using ReminderList.Helpers;
+using ReminderList.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WPFTemplate.ViewModels
+namespace ReminderList.ViewModels
 {
     class HomeScreenViewModel : BaseViewModel
     {

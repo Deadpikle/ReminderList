@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFTemplate
+namespace ReminderList.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AnotherScreen.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AnotherScreen : UserControl
     {
-        public MainWindow()
+        public AnotherScreen()
         {
             InitializeComponent();
         }

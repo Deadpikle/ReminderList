@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace WPFTemplate.Helpers
+namespace ReminderList.Helpers
 {
     // https://gist.github.com/schuster-rainer/2648922 with some modifications
     public class RelayCommand<T> : ICommand

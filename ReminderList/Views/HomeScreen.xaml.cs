@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFTemplate.Views
+namespace ReminderList.Views
 {
     /// <summary>
     /// Interaction logic for HomeScreen.xaml
