@@ -1,5 +1,6 @@
 ﻿using ReminderList.Helpers;
 using ReminderList.Interfaces;
+using ReminderList.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,19 @@ using System.Windows.Input;
 
 namespace ReminderList.ViewModels
 {
-    class AnotherScreen : BaseViewModel
+    class ListOfItemsViewModel : BaseViewModel
     {
-        public AnotherScreen(IChangeViewModel viewModelChanger) : base(viewModelChanger)
+        private ListOfItems _itemList;
+
+        public ListOfItemsViewModel(IChangeViewModel viewModelChanger) : base(viewModelChanger)
         {
+            _itemList = new ListOfItems();
+        }
+
+        public ListOfItems ItemList
+        {
+            get => _itemList;
+            set { _itemList = value; NotifyPropertyChanged(); }
         }
 
         public ICommand GoToMainMenu

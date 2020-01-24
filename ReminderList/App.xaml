@@ -22,8 +22,8 @@
                 <Setter Property="mahapps:ControlsHelper.ContentCharacterCasing" Value="Normal"/>
             </Style>
 
-            <DataTemplate DataType="{x:Type viewModels:AnotherScreen}">
-                <views:AnotherScreen/>
+            <DataTemplate DataType="{x:Type viewModels:ListOfItemsViewModel}">
+                <views:ListOfItems/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:HomeScreenViewModel}">
                 <views:HomeScreen/>

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace ReminderList.Views
 {
     /// <summary>
-    /// Interaction logic for AnotherScreen.xaml
+    /// Interaction logic for ListOfItems.xaml
     /// </summary>
-    public partial class AnotherScreen : UserControl
+    public partial class ListOfItems : UserControl
     {
-        public AnotherScreen()
+        public ListOfItems()
         {
             InitializeComponent();
         }
