@@ -11,12 +11,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Content="WPFTemplate" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0 5 0 0"/>
-        <TabControl Grid.Row="1" ItemsSource="{Binding Tabs}">
-
+        <Label Content="Reminder List" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Margin="0 5 0 0"/>
+        <Button Content="Load Data" HorizontalAlignment="Left" Margin="4" Padding="5" Command="{Binding Save}"/>
+        <Button Content="Save Data" HorizontalAlignment="Left" Margin="100,4,4,4" Padding="5" Command="{Binding Save}"/>
+        <Button Content="Refresh Data (Dates, etc.)" HorizontalAlignment="Right" Margin="4,4,80,4" Padding="5" Command="{Binding Refresh}"/>
+        <Button Content="Add List" HorizontalAlignment="Right" Margin="4" Padding="5" Command="{Binding AddList}"/>
+        <TabControl Grid.Row="1" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedItem}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Text="{Binding ItemList.Name}"></TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
         </TabControl>

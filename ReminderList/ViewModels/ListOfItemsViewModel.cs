@@ -1,4 +1,6 @@
-﻿using ReminderList.Helpers;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
+using ReminderList.Helpers;
 using ReminderList.Interfaces;
 using ReminderList.Models;
 using System;
@@ -14,10 +16,32 @@ namespace ReminderList.ViewModels
     {
         private ListOfItems _itemList;
 
+        public ListOfItemsViewModel()
+        {
+        }
+
         public ListOfItemsViewModel(IChangeViewModel viewModelChanger) : base(viewModelChanger)
         {
             _itemList = new ListOfItems();
+            _itemList.Name = "Untitled List";
         }
+
+        public ListOfItemsViewModel(IChangeViewModel viewModelChanger, string listName) : base(viewModelChanger)
+        {
+            _itemList = new ListOfItems();
+            _itemList.Name = listName;
+        }
+
+        public ListOfItemsViewModel(IChangeViewModel viewModelChanger, ListOfItems list) : base(viewModelChanger)
+        {
+            _itemList = list;
+        }
+
+        [JsonIgnore]
+        public IListHandler ListHandler { get; set; }
+
+        [JsonIgnore]
+        public IDialogCoordinator DialogCoordinator { get; set; }
 
         public ListOfItems ItemList
         {
@@ -25,14 +49,42 @@ namespace ReminderList.ViewModels
             set { _itemList = value; NotifyPropertyChanged(); }
         }
 
-        public ICommand GoToMainMenu
+        [JsonIgnore]
+        public ICommand AddListItem => new RelayCommand(AddListItemToList);
+
+        [JsonIgnore]
+        public ICommand DeleteList => new RelayCommand(DeleteListFromApp);
+
+        private void AddListItemToList()
         {
-            get { return new RelayCommand(PopToMainMenu); }
+            ItemList.Add(new ReminderItem()
+            {
+                Item = "Name Here",
+                Notes = "N/A",
+                IsToggledOn = false,
+                LastToggleDate = DateTime.Now
+            });
         }
 
-        private void PopToMainMenu()
+        public void Refresh()
         {
-            PopViewModel();
+            ItemList.Refresh();
+        }
+
+        private async void DeleteListFromApp()
+        {
+            var settings = new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Yes",
+                NegativeButtonText = "No"
+            };
+            var shouldDelete = await DialogCoordinator.ShowMessageAsync(this, "Warning!", "Are you sure you want to delete this list? " +
+                "It will be gone forever!",
+                MessageDialogStyle.AffirmativeAndNegative, settings);
+            if (shouldDelete == MessageDialogResult.Affirmative)
+            {
+                ListHandler?.DeleteFromApp(this);
+            }
         }
     }
 }

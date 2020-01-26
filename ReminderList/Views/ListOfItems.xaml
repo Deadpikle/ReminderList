@@ -4,14 +4,83 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReminderList.Views"
+             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             Dialog:DialogParticipation.Register="{Binding}"
+             Name="ListOfItemsControl">
+    <UserControl.Resources>
+        <Style x:Key="CenterCellStyle" TargetType="DataGridCell" BasedOn="{StaticResource MetroDataGridCell}">
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" Content="AnotherScreen -- Hello!" FontWeight="Bold"></Label>
-        <Button Grid.Row="1" Content="Back to Main Menu" Width="200" Margin="0,35,0,0" Height="100" Command="{Binding GoToMainMenu}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid Grid.Row="0" 
+                  ItemsSource="{Binding ItemList.Items}"
+                  ColumnHeaderStyle="{StaticResource NoCapsColumnHeader}"
+                  Name="PathsDataGrid"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="False"
+                  IsEnabled="True"
+                  CanUserDeleteRows="False"
+                  SelectionUnit="Cell"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal" 
+                  BorderBrush="Gray" BorderThickness="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Notes" Binding="{Binding Item}" IsReadOnly="False"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Notes}" IsReadOnly="False"/>
+                <DataGridTemplateColumn Header="Switch" CanUserReorder="False" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding ElementName=ListOfItemsControl, Path=DataContext.ItemList.LeftSideText}"
+                                       VerticalAlignment="Center"/>
+                                <mahapps:ToggleSwitch Margin="2" IsChecked="{Binding IsToggledOn, UpdateSourceTrigger=PropertyChanged}" OffLabel="" OnLabel="" 
+                                                      OnSwitchBrush="Red"/>
+                                <Label Content="{Binding ElementName=ListOfItemsControl, Path=DataContext.ItemList.RightSideText}"
+                                       VerticalAlignment="Center" Margin="0,0,4,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Last Toggle" Binding="{Binding LastToggleDateInfo, Mode=OneWay}" 
+                                    IsReadOnly="True" CellStyle="{StaticResource CenterCellStyle}"/>
+                <DataGridTemplateColumn Header="" CanUserReorder="False" IsReadOnly="False" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Delete" Width="100" Command="{Binding Remove}" FontSize="10"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+            <DataGrid.Style>
+                <Style BasedOn="{StaticResource MetroDataGrid}" TargetType="{x:Type DataGrid}">
+                    <Setter Property="AlternatingRowBackground" Value="{DynamicResource GrayBrush10}" />
+                    <Setter Property="IsTabStop" Value="False"/>
+                </Style>
+            </DataGrid.Style>
+        </DataGrid>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Button Width="100" Content="Add Item" Margin="4" Command="{Binding AddListItem}"/>
+            <Label FontSize="10" Content="List Name" Padding="0" Margin="0,0,0,1"/>
+            <TextBox Text="{Binding ItemList.Name, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Name"/>
+            <Label FontSize="10" Content="Description" Padding="0" Margin="0,0,0,1"/>
+            <TextBox Text="{Binding ItemList.Description, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Description"/>
+            <Label FontSize="10" Content="Number of Days for Reminder" Padding="0" Margin="0,3,3,1"/>
+            <mahapps:NumericUpDown Minimum="0" Maximum="150" Interval="1" Value="{Binding ItemList.NumberOfDaysForReminders}"  HorizontalContentAlignment="Left"/>
+            <Label FontSize="10" Content="Left Side Switch Text" Padding="0" Margin="0,0,0,1"/>
+            <TextBox Text="{Binding ItemList.LeftSideText, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Left Side Switch Text"/>
+            <Label FontSize="10" Content="Right Side Switch Text" Padding="0" Margin="0,0,0,1"/>
+            <TextBox Text="{Binding ItemList.RightSideText, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Right Side Switch Text"/>
+            <Button Width="100" Content="Delete List" Margin="4" Command="{Binding DeleteList}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

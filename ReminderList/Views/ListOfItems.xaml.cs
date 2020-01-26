@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MahApps.Metro.Controls.Dialogs;
+using ReminderList.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +24,17 @@ namespace ReminderList.Views
     {
         public ListOfItems()
         {
+            DataContextChanged += ListOfItems_DataContextChanged;
             InitializeComponent();
+        }
+
+        private void ListOfItems_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext is ListOfItemsViewModel)
+            {
+                (DataContext as ListOfItemsViewModel).DialogCoordinator = DialogCoordinator.Instance;
+            }
+            DataContextChanged -= ListOfItems_DataContextChanged;
         }
     }
 }

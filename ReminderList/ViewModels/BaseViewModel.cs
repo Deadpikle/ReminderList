@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ReminderList.Helpers;
+using Newtonsoft.Json;
 
 namespace ReminderList.ViewModels
 {
@@ -12,11 +13,16 @@ namespace ReminderList.ViewModels
     {
         IChangeViewModel _viewModelChanger;
 
+        public BaseViewModel()
+        {
+        }
+
         public BaseViewModel(IChangeViewModel viewModelChanger)
         {
             ViewModelChanger = viewModelChanger;
         }
 
+        [JsonIgnore]
         public IChangeViewModel ViewModelChanger
         {
             get { return _viewModelChanger; }
