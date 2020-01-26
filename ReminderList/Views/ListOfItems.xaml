@@ -13,6 +13,8 @@
     <UserControl.Resources>
         <Style x:Key="CenterCellStyle" TargetType="DataGridCell" BasedOn="{StaticResource MetroDataGridCell}">
             <Setter Property="TextBlock.TextAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -35,8 +37,8 @@
                   GridLinesVisibility="Horizontal" 
                   BorderBrush="Gray" BorderThickness="0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Notes" Binding="{Binding Item}" IsReadOnly="False"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Notes}" IsReadOnly="False"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Item}" IsReadOnly="False"/>
+                <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" IsReadOnly="False"/>
                 <DataGridTemplateColumn Header="Switch" CanUserReorder="False" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -51,8 +53,20 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Last Toggle" Binding="{Binding LastToggleDateInfo, Mode=OneWay}" 
-                                    IsReadOnly="True" CellStyle="{StaticResource CenterCellStyle}"/>
+                <DataGridTemplateColumn Header="Last Toggle" IsReadOnly="False" CellStyle="{StaticResource CenterCellStyle}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding LastToggleDateInfo, Mode=OneWay}"
+                                    VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <mahapps:DateTimePicker SelectedDate="{Binding LastToggleDate, UpdateSourceTrigger=PropertyChanged}"
+                                                    SelectedTimeFormat="Short" SelectedDateFormat="Long"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="" CanUserReorder="False" IsReadOnly="False" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -68,17 +82,17 @@
                 </Style>
             </DataGrid.Style>
         </DataGrid>
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="2">
             <Button Width="100" Content="Add Item" Margin="4" Command="{Binding AddListItem}"/>
-            <Label FontSize="10" Content="List Name" Padding="0" Margin="0,0,0,1"/>
+            <Label FontSize="10" Content="List Name" Padding="0" Margin="0,4,0,4"/>
             <TextBox Text="{Binding ItemList.Name, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Name"/>
-            <Label FontSize="10" Content="Description" Padding="0" Margin="0,0,0,1"/>
+            <Label FontSize="10" Content="Description" Padding="0" Margin="0,4,0,4"/>
             <TextBox Text="{Binding ItemList.Description, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Description"/>
-            <Label FontSize="10" Content="Number of Days for Reminder" Padding="0" Margin="0,3,3,1"/>
+            <Label FontSize="10" Content="Number of Days for Reminder" Padding="0" Margin="0,4,4,4"/>
             <mahapps:NumericUpDown Minimum="0" Maximum="150" Interval="1" Value="{Binding ItemList.NumberOfDaysForReminders}"  HorizontalContentAlignment="Left"/>
-            <Label FontSize="10" Content="Left Side Switch Text" Padding="0" Margin="0,0,0,1"/>
+            <Label FontSize="10" Content="Left Side Switch Text" Padding="0" Margin="0,4,0,4"/>
             <TextBox Text="{Binding ItemList.LeftSideText, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Left Side Switch Text"/>
-            <Label FontSize="10" Content="Right Side Switch Text" Padding="0" Margin="0,0,0,1"/>
+            <Label FontSize="10" Content="Right Side Switch Text" Padding="0" Margin="0,4,0,4"/>
             <TextBox Text="{Binding ItemList.RightSideText, UpdateSourceTrigger=PropertyChanged}" mahapps:TextBoxHelper.Watermark="Right Side Switch Text"/>
             <Button Width="100" Content="Delete List" Margin="4" Command="{Binding DeleteList}"/>
         </StackPanel>

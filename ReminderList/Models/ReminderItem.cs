@@ -78,7 +78,7 @@ namespace ReminderList.Models
             get
             {
                 double daysAgo = GetDaysAgoForElapsedTime();
-                return _lastToggleDate.ToString() + string.Format("\n({0} days ago)", daysAgo);
+                return _lastToggleDate.ToString("f") + string.Format("\n({0} days ago)", daysAgo);
             }
         }
 
