@@ -1,4 +1,6 @@
-﻿using ReminderList.Helpers;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Newtonsoft.Json;
+using ReminderList.Helpers;
 using ReminderList.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -57,6 +59,9 @@ namespace ReminderList.ViewModels
             set { _selectedItem = value; NotifyPropertyChanged(); }
         }
 
+        [JsonIgnore]
+        public IDialogCoordinator DialogCoordinator { get; set; }
+
         public ICommand AddList => new RelayCommand(AddNewList);
         public ICommand Load => new RelayCommand(LoadItemsFromDisk);
         public ICommand Save => new RelayCommand(SaveData);
@@ -66,7 +71,8 @@ namespace ReminderList.ViewModels
         {
             var newTab = new ListOfItemsViewModel(this, "List " + (Tabs.Count + 1))
             {
-                ListHandler = this
+                ListHandler = this,
+                DialogCoordinator = DialogCoordinator
             };
             Tabs.Add(newTab);
             SelectedItem = newTab;
@@ -83,6 +89,7 @@ namespace ReminderList.ViewModels
             {
                 viewModel.ViewModelChanger = ViewModelChanger; // set so that this is ready when loading from disk
                 viewModel.ListHandler = this; // set so that this is ready when loading from disk
+                viewModel.DialogCoordinator = DialogCoordinator;
                 viewModel.Refresh();
             }
         }
@@ -142,7 +149,19 @@ namespace ReminderList.ViewModels
                 var list = Newtonsoft.Json.JsonConvert.DeserializeObject<ObservableCollection<ListOfItemsViewModel>>(json);
                 if (list != null)
                 {
-                    Tabs = list;
+                    if (Tabs == null)
+                    {
+                        Tabs = new ObservableCollection<ListOfItemsViewModel>();
+                    }
+                    Tabs?.Clear();
+                    foreach (ListOfItemsViewModel vm in list)
+                    {
+                        Tabs.Add(vm);
+                    }
+                    foreach (var tab in Tabs)
+                    {
+                        tab.DialogCoordinator = DialogCoordinator;
+                    }
                     RefreshData();
                     _lastSaveFilePath = path;
                 }
